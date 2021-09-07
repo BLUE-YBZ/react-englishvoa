@@ -5,6 +5,7 @@ import './index.css';
 import { Layout } from 'antd';
 import AppHeader from './components/Header/index';
 import AppComponent from './components/Content/index';
+import Detail from './components/Content/Detail/index'
 
 const { Header, Footer,  Content } = Layout;
 class App extends Component {
@@ -25,7 +26,7 @@ class App extends Component {
            </Header>
            <Content className="app-content">
              <Switch>
-               <Route path='/detail/:id'></Route>
+               <Route path='/detail/:id' component={Detail}></Route>
                <Route path='/:id' component={AppComponent}></Route>
              </Switch>
            </Content>

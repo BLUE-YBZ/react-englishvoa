@@ -37,7 +37,6 @@ class AppHeader extends Component {
     }
 
     handleClick (e) {
-        console.log('porpsss',e.key)
         this.setState({ current: e.key });
     };
 

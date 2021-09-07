@@ -1,11 +1,11 @@
 import React, {Component} from 'react';
 import { List } from 'antd';
+import { Link } from 'react-router-dom'
 import axios from '_axios@0.21.3@axios';
 import './index.css'
 
 class AppComponent extends Component {
     constructor(props) {
-        console.log('propscontent',props)
         super(props);
         this.state = {
             listData : [],
@@ -13,19 +13,18 @@ class AppComponent extends Component {
         }
     }
     render() {
-        return (    
+        return (
           <List
            className="app-content-List"
             size="large"
             bordered
             dataSource={this.state.listData}
-            renderItem={item => <List.Item>{item.title}</List.Item>}
+            renderItem={item => (<List.Item><Link to={`/detail/${item.id}`}>{item.title}</Link></List.Item>)}
            />
         )
     }
 
-    UNSAFE_componentWillReceiveProps(nextProps) {
-    console.log('props改变',nextProps)
+    UNSAFE_componentWillReceiveProps() {
     axios.get('http://www.dell-lee.com/react/api/list.json?id='+ this.props.match.params.id)
     .then(res => {
        this.setState({
