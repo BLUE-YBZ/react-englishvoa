@@ -1,17 +1,37 @@
-import React from 'react';
+import React,{ Component, Fragment} from 'react';
 import ReactDOM from 'react-dom';
+import { BrowserRouter, Route, Link } from 'react-router-dom'
 import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import { Layout } from 'antd';
+import AppHeader from './components/Header/index';
+import AppComponent from './components/Content/index';
 
-ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById('root')
-);
+const { Header, Footer,  Content } = Layout;
+class App extends Component {
+  // constructor(props) {
+  //   super(props);
+  //   this.state = {
+  //     menuList: []
+  //   }
+  // }
+ 
+  render() {
+    return (
+      <Fragment>
+      <Layout style={{minWidth: '1100px'}}>
+       <Header style={{backgroundColor: '#ffff'}}>
+         <AppHeader/>111
+       </Header>
+       <Content style={{height:'80%'}}>
+         <AppComponent/>
+       </Content>
+       <Footer style={{height:'10%'}}>Footer</Footer>
+     </Layout>
+    </Fragment>
+    )
+  }
+}
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
+
+ReactDOM.render(<App />, document.getElementById('root')); // 可与其他框架并存，react只会处理 div 为 id=“root”的标签内容
+
