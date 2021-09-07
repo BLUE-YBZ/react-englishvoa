@@ -1,6 +1,6 @@
 import React,{ Component, Fragment} from 'react';
 import ReactDOM from 'react-dom';
-import { BrowserRouter, Route, Link } from 'react-router-dom'
+import { BrowserRouter, Route, Switch } from 'react-router-dom'
 import './index.css';
 import { Layout } from 'antd';
 import AppHeader from './components/Header/index';
@@ -18,15 +18,20 @@ class App extends Component {
   render() {
     return (
       <Fragment>
-      <Layout style={{minWidth: '1100px'}}>
-       <Header style={{backgroundColor: '#ffff'}}>
-         <AppHeader/>111
-       </Header>
-       <Content style={{height:'80%'}}>
-         <AppComponent/>
-       </Content>
-       <Footer style={{height:'10%'}}>Footer</Footer>
-     </Layout>
+        <BrowserRouter>
+          <Layout>
+           <Header className="app-header">
+             <AppHeader/>
+           </Header>
+           <Content className="app-content">
+             <Switch>
+               <Route path='/detail/:id'></Route>
+               <Route path='/:id' component={AppComponent}></Route>
+             </Switch>
+           </Content>
+           <Footer className="app-footer"><div className="app-Footer-content">@copyright Melody 2021</div></Footer>
+         </Layout>
+        </BrowserRouter>
     </Fragment>
     )
   }

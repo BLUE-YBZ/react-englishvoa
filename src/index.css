@@ -1,1 +1,14 @@
 @import '~antd/dist/antd.css';
+.app-header{
+    background-color: #FFF;
+}
+.app-footer{
+    height: 50px;
+    line-height: 50px !important;
+    padding: 0 !important;
+    width: 100%;
+}
+.app-Footer-content {
+    width: 200px;
+    margin: 0 auto;
+}

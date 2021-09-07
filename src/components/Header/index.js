@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 import { Menu, Button } from 'antd';
 import logo from './logo.png';
 import './index.css'
@@ -7,18 +8,21 @@ class AppHeader extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            menuList: []
+            menuList: [],
+            current: '1'
         }
+        this.handleClick = this.handleClick.bind(this)
     }    
     render() {
+        const { current } = this.state
         return (
           <div id="AppHeader">
-            <img class="app-english-logo" src={logo} alt="logo"/>
-            <Menu mode="horizontal">
+            <img className="app-english-logo" src={logo} alt="logo"/>
+            <Menu mode="horizontal" onClick={this.handleClick} selectedKeys={[current]}>
               {this.getMenuList()}
             </Menu>
-              <div class="app-english-btn1"><Button type="primary">登录</Button></div>
-              <div class="app-english-btn2"><Button class="app-english-btn2" type="primary">VIP</Button></div>   
+              <div className="app-english-btn1"><Button type="primary">登录</Button></div>
+              <div className="app-english-btn2"><Button type="primary">VIP</Button></div>   
           </div>
         )
     }
@@ -32,10 +36,20 @@ class AppHeader extends Component {
         })
     }
 
+    handleClick (e) {
+        console.log('porpsss',e.key)
+        this.setState({ current: e.key });
+    };
+
     getMenuList() {
+        const { current } = this.state
+        console.log('current',current)
         return this.state.menuList.map(item => {
             return (
-              <Menu.Item key={item.id}>{item.title}</Menu.Item>
+              <Menu.Item key={item.id}>
+                  {console.log('link',current)}
+                  <Link to={`/${current}`}>{item.title}</Link>
+              </Menu.Item>
             )
         })
     }
