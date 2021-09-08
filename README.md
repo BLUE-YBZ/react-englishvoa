@@ -1,5 +1,7 @@
 # 接口信息
 > http://www.dell-lee.com/react/api/
+
+
 1.list.json?id=1
 请求某个分类下的数据列表
 入参
