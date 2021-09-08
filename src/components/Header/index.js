@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
-import { Menu, Button } from 'antd';
+import { Menu, Button, Modal, Input, message } from 'antd';
+import { UserOutlined } from '@ant-design/icons'
 import logo from './logo.png';
 import './index.css'
 class AppHeader extends Component {
@@ -9,9 +10,19 @@ class AppHeader extends Component {
         super(props);
         this.state = {
             menuList: [],
-            current: '1'
+            current: '1',
+            login: false, // 未登录
+            showModal: false,
+            pwd: '',
+            account: ''
         }
         this.handleClick = this.handleClick.bind(this)
+        this.handleClickBtn = this.handleClickBtn.bind(this)
+        this.handleClickModal = this.handleClickModal.bind(this)
+        this.handleClickOk = this.handleClickOk.bind(this)
+        this.changeAccount = this.changeAccount.bind(this)
+        this.changePwd = this.changePwd.bind(this)
+        this.handleClickBack = this.handleClickBack.bind(this)
     }    
     render() {
         const { current } = this.state
@@ -21,8 +32,27 @@ class AppHeader extends Component {
             <Menu mode="horizontal" onClick={this.handleClick} selectedKeys={[current]}>
               {this.getMenuList()}
             </Menu>
-              <div className="app-english-btn1"><Button type="primary">登录</Button></div>
-              <div className="app-english-btn2"><Button type="primary">VIP</Button></div>   
+            {!this.state.login ? <div className="app-english-btn2"><Button type="primary" onClick={this.handleClickBtn}>登录</Button></div> :
+            <div className="app-english-btn2"><Button type="primary" onClick={this.handleClickBack}>退出</Button></div> }
+            <Modal 
+                title="登录"
+                visible={this.state.showModal}
+                onCancel={this.handleClickModal}
+                onOk={this.handleClickOk}
+            >
+                <Input 
+                  size="large" placeholder="请输入账号"
+                  style={{marginBottom: '10px'}}
+                  prefix={<UserOutlined />}
+                  value={this.state.account}
+                  onChange={this.changeAccount}
+                />
+                <Input.Password 
+                  placeholder="请输入密码"
+                  value={this.state.pwd}
+                  onChange={this.changePwd}
+                />
+            </Modal>   
           </div>
         )
     }
@@ -33,6 +63,72 @@ class AppHeader extends Component {
             this.setState({
                 menuList: res.data.data
             })
+        })
+        axios.get('http://www.dell-lee.com/react/api/isLogin.json',{
+            withCredentials:true
+        }).then( res => {
+            // 查看用户是否登录，返回值是一个布尔值，表示是否登录
+            this.setState({
+                login: res.data.data.login
+            })
+        })
+    }
+    
+    handleClickBack() {
+        axios.get('http://www.dell-lee.com/react/api/logout.json',{
+            withCredentials: true
+        }).then((res) => {
+            this.setState({
+                login: !res.data.data.logout
+            })
+        })
+    }
+
+    changeAccount(e) {
+        this.setState({
+            account: e.target.value
+        })
+    }
+
+    changePwd(e) {
+        this.setState({
+            pwd: e.target.value
+        })
+    }
+
+    handleClickOk() {
+        if (this.state.account === '' || this.state.pwd === '') {
+            message.error('账户或密码为空');
+            return
+        } else {
+            const user = this.state.account
+            const pwd = this.state.pwd
+            axios.get(`http://www.dell-lee.com/react/api/login.json?user=${user}&password=${pwd}`,{
+                withCredentials:true
+            }).then((res) => {
+                message.success('登录成功');
+                // 验证账号密码是否正确返回的也是布尔值
+                this.setState({
+                    login: res.data.data.login,
+                    showModal: false
+                })
+                return
+            },(e)=> {
+                message.error('账户不存在或密码错误');
+            })
+        }
+        
+    }
+
+    handleClickModal() {
+        this.setState({
+            showModal: false
+        })
+    }
+
+    handleClickBtn() {
+        this.setState({
+            showModal: true
         })
     }
 

@@ -20,7 +20,7 @@ class App extends Component {
     return (
       <Fragment>
         <BrowserRouter>
-          <Layout>
+          <Layout style={{height: '100%'}}>
            <Header className="app-header">
              <AppHeader/>
            </Header>
